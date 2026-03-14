@@ -92,6 +92,7 @@ def main():
     if not final_music:
         print("No remaining music. Program exits.")
         return
+    random.shuffle(final_music)
 
     try:
         max_interval = float(input("Please enter the maximum interval (seconds):"))
@@ -110,7 +111,7 @@ def main():
         while True:
             pygame.mixer.init()
             pygame.mixer.music.set_volume(0.5)
-            path, hash_val = random.choice(final_music)
+            path, hash_val = final_music.pop()
             sub_dir = hash_val[:2]
             file_path = os.path.join(objects_dir, sub_dir, hash_val)
 
