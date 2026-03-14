@@ -33,6 +33,3 @@ use python to run ./mmp.py. follow the instructions, then enjoy the music!
 if you want to stop the music player, the only way is to kill the process. (For example, Ctrl+C in the terminal)
 
 when there's no remaining music, the player will automatically stops.
-
-## Tips
-If this repository is not on the same disk as .minecraft/, the music could sounds very bad. try to copy the folder into this repository(but not the whole, just the .minecraft/assets/ will be ok)
