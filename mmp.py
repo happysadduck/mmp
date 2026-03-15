@@ -108,7 +108,7 @@ def main():
     objects_dir = os.path.join(mc_path, "assets", "objects")
 
     try:
-        while True:
+        while final_music:
             pygame.mixer.init()
             pygame.mixer.music.set_volume(0.5)
             path, hash_val = final_music.pop()
