@@ -2,15 +2,8 @@ import os
 import json
 import random
 import time
-import miniaudio
-
-
-def play_ogg_miniaudio(file_path):
-    stream = miniaudio.stream_file(file_path)
-    with miniaudio.PlaybackDevice() as device:
-        device.start(stream)
-        while device.running:
-            time.sleep(0.5)
+import sys
+import pygame
 
 
 def main():
@@ -114,22 +107,36 @@ def main():
 
     objects_dir = os.path.join(mc_path, "assets", "objects")
 
-    while final_music:
-        path, hash_val = final_music.pop()
-        sub_dir = hash_val[:2]
-        file_path = os.path.join(objects_dir, sub_dir, hash_val)
+    try:
+        while final_music:
+            pygame.mixer.init()
+            pygame.mixer.music.set_volume(0.5)
+            path, hash_val = final_music.pop()
+            sub_dir = hash_val[:2]
+            file_path = os.path.join(objects_dir, sub_dir, hash_val)
 
-        if not os.path.exists(file_path):
-            print(f"File lost: {file_path}, skipping...")
-            time.sleep(1)
-            continue
+            if not os.path.exists(file_path):
+                print(f"File lost: {file_path}, skipping...")
+                time.sleep(1)
+                continue
 
-        print(f"\nPlaying: {path}")
-        play_ogg_miniaudio(file_path)
+            print(f"\nPlaying: {path}")
+            try:
+                pygame.mixer.music.load(file_path)
+                pygame.mixer.music.play()
+                while pygame.mixer.music.get_busy():
+                    time.sleep(0.5)
+            except Exception as e:
+                print(f"Playback error: {e}")
 
-        interval = random.uniform(min_interval, max_interval)
-        print(f"Wait for {interval:.1f} seconds before the next song...")
-        time.sleep(interval)
+            interval = random.uniform(min_interval, max_interval)
+            print(f"Wait for {interval:.1f} seconds before the next song...")
+            pygame.mixer.quit()
+            time.sleep(interval)
+    except KeyboardInterrupt:
+        print("\n\nThe playback has ended.")
+        pygame.mixer.quit()
+        sys.exit(0)
 
 
 if __name__ == "__main__":
